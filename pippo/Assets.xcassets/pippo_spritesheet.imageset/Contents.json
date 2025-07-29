@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "pippo_spritesheet.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
