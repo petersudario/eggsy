@@ -10,34 +10,46 @@ import SpriteKit
 class GameScene: SKScene {
     override func didMove(to view: SKView) {
         backgroundColor = .clear
-        
-        // PePS: instanciando a sprite sheet
+
+        // Carrega a imagem como UIImage para uso com cropping em pontos
+        guard let image = UIImage(named: "pippo_spritesheet") else {
+            print("Erro: imagem 'pippo_spritesheet' não encontrada")
+            return
+        }
+
+        // Cria a textura base da sprite sheet
         let spriteSheet = SKTexture(imageNamed: "pippo_spritesheet")
-        
-        // peps: mudar a renderização do spritesheet (se quiser serrilhado e tal)
         spriteSheet.filteringMode = .nearest
-        
-        
-        //tamanho da sprite sheet inteira
-        let spriteSheetWidth: CGFloat = 96
+
         let frameWidth: CGFloat = 24
         let frameHeight: CGFloat = 24
+        let sheetWidth: CGFloat = 96
+        let sheetHeight: CGFloat = 24
 
         var frames: [SKTexture] = []
 
         for i in 0..<3 {
-            let x = CGFloat(i) * frameWidth / spriteSheetWidth
-            let rect = CGRect(x: x, y: 0, width: frameWidth / spriteSheetWidth, height: 1.0)
+            // Calcular valores normalizados
+            let x = CGFloat(i) * frameWidth / sheetWidth
+            // Y precisa ser invertido, pois a origem do SKTexture é no canto inferior esquerdo
+            let y = 1.0 - (frameHeight / sheetHeight)
+            let w = frameWidth / sheetWidth
+            let h = frameHeight / sheetHeight
+            
+            let rect = CGRect(x: x, y: y, width: w, height: h)
+            
             let frame = SKTexture(rect: rect, in: spriteSheet)
             frame.filteringMode = .nearest
             frames.append(frame)
         }
 
+        // Cria o sprite com o primeiro frame
         let sprite = SKSpriteNode(texture: frames[0])
         sprite.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        sprite.setScale(6.0) // pixel art ficar visível
+        sprite.setScale(5.0) // Escala para pixel art
         addChild(sprite)
 
+        // Animação em loop
         let animation = SKAction.animate(with: frames, timePerFrame: 0.15)
         sprite.run(.repeatForever(animation))
     }

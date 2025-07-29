@@ -8,20 +8,17 @@
 import SwiftUI
 import SpriteKit
 
-struct ContentView: View {
-    var scene: SKScene {
-        let scene = GameScene(size: CGSize(width: 128, height: 128))
-        scene.scaleMode = .resizeFill
-        return scene
-    }
+import SwiftUI
 
+struct ContentView: View {
     var body: some View {
-        SpriteView(scene: scene)
+        TransparentSpriteView(scene: GameScene(size: CGSize(width: 128, height: 128)))
             .frame(width: 128, height: 128)
-            .background(.clear) 
+            .background(Color.clear)
             .ignoresSafeArea()
     }
 }
+
 
 
 #Preview {
