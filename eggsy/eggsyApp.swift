@@ -1,5 +1,5 @@
 //
-//  pippoApp.swift
+//  eggsyApp.swift
 //  barto
 //
 //  Created by Pepo on 29/07/25.

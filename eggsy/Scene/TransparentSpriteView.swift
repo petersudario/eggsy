@@ -1,6 +1,6 @@
 //
 //  TransparentSpriteView.swift
-//  pippo
+//  eggsy
 //
 //  Created by Pepo on 29/07/25.
 //

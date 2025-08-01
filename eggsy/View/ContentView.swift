@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  barto
+//  eggsy
 //
 //  Created by Pepo on 29/07/25.
 //
@@ -14,6 +14,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             AnimatedBackgroundView()
+            
             VStack (spacing: 200){
                 Image("logo")
                     .resizable()
@@ -29,7 +30,7 @@ struct ContentView: View {
         
 
         }
-        .background(.black)
+        .background(.white)
         
     }
 }
