@@ -10,9 +10,22 @@
 		F7D304772E394D3F00462437 /* eggsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eggsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F79EAA522E3D45E200850A35 /* Exceptions for "eggsy" folder in "eggsy" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F7D304762E394D3F00462437 /* eggsy */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F7D304792E394D3F00462437 /* eggsy */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F79EAA522E3D45E200850A35 /* Exceptions for "eggsy" folder in "eggsy" target */,
+			);
 			path = eggsy;
 			sourceTree = "<group>";
 		};
@@ -251,12 +264,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"pippo/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"eggsy/Preview Content\"";
 				DEVELOPMENT_TEAM = 2QB643XL72;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = eggsy/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Eggsy;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.puzzle-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -282,12 +296,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"pippo/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"eggsy/Preview Content\"";
 				DEVELOPMENT_TEAM = 2QB643XL72;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = eggsy/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Eggsy;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.puzzle-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

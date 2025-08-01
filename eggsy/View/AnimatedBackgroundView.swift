@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct AnimatedBackgroundView: View {
-    let images = ["animated_background_1", "animated_background_2", "animated_background_3"]
+    var images : [String]
     
     @State private var currentIndex = 0
 
@@ -19,7 +19,6 @@ struct AnimatedBackgroundView: View {
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-                .transition(.opacity)
                 .id(currentIndex)
         }
         .onAppear {
@@ -30,4 +29,8 @@ struct AnimatedBackgroundView: View {
             }
         }
     }
+}
+
+#Preview {
+    AnimatedBackgroundView(images: ["animated_background_1", "animated_background_2", "animated_background_3"])
 }

@@ -8,35 +8,37 @@
 import SwiftUI
 import SpriteKit
 
-import SwiftUI
-
 struct ContentView: View {
+    
     var body: some View {
         ZStack {
-            AnimatedBackgroundView()
-            
+            AnimatedBackgroundView(images: ["animated_background_1", "animated_background_2", "animated_background_3"])
+
             VStack (spacing: 200){
-                Image("logo")
+                Image("game_starting_logo")
                     .resizable()
-                    .frame(width: 270, height: 140)
-                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 209, height: 215)
                 
-                Image("start_button")
-                    .resizable()
-                    .frame(width: 225, height: 75)
                     .aspectRatio(contentMode: .fit)
+            
+                ActionButton(text: "START")
+
+
             }
-            .padding(.top, 100)
+            .padding(.top, 150)
         
 
         }
         .background(.white)
         
     }
+    
 }
 
 
 
 #Preview {
     ContentView()
+    
+    
 }
