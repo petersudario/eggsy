@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ActionButton: View {
     var text: String
-    
+    var action: () -> Void = { }
     var body: some View {
         ZStack {
             Image("button_box")
@@ -20,5 +20,10 @@ struct ActionButton: View {
             Text(text)
                 .font(.custom("Chalkboy", size: 68))
         }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            action()
+        }
     }
 }
+

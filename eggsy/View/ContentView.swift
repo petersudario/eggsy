@@ -6,39 +6,41 @@
 //
 
 import SwiftUI
-import SpriteKit
+import RouterKit
 
 struct ContentView: View {
     
     var body: some View {
-        ZStack {
-            AnimatedBackgroundView(images: ["animated_background_1", "animated_background_2", "animated_background_3"])
 
-            VStack (spacing: 200){
-                Image("game_starting_logo")
-                    .resizable()
-                    .frame(width: 209, height: 215)
-                
-                    .aspectRatio(contentMode: .fit)
-            
-                ActionButton(text: "START")
+        RouterView<AppRoute>(rootView: .startscreen)
 
+    }
+    
+}
 
-            }
-            .padding(.top, 150)
-        
-
+enum AppRoute: Routable {
+    case startscreen
+    case game
+    
+    var view: any View {
+        switch self {
+        case .startscreen: StartScreen().hideBackButton()
+        case .game: Game().hideBackButton()
         }
-        .background(.white)
-        
     }
     
 }
 
 
+struct HideBackButton: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .navigationBarBackButtonHidden(true)
+    }
+}
 
-#Preview {
-    ContentView()
-    
-    
+extension View {
+    func hideBackButton() -> some View {
+        self.modifier(HideBackButton())
+    }
 }
