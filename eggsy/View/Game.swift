@@ -4,7 +4,6 @@
 //
 //  Created by Pepo on 01/08/25.
 //
-
 import SwiftUI
 
 struct Game: View {
@@ -12,7 +11,8 @@ struct Game: View {
     @State private var answered: Bool = false
     @State private var answeredYes: Bool = false
     @State private var showContinue = false
-    
+    @State private var showConsequenceWarning = false
+
     @State private var consequenceState: [String: Bool] = [:]
     
     private let questions: [Question] = [
@@ -49,7 +49,6 @@ struct Game: View {
             yesConsequenceImageSize: CGSize(width: 260, height: 328),
             noConsequenceImageSize: CGSize(width: 210, height: 261)
         )
-        
     ]
     
     var body: some View {
@@ -58,21 +57,6 @@ struct Game: View {
         ZStack {
             VStack {
                 Spacer()
-                
-                if answered {
-                    let hasConsequence = answeredYes
-                    ? (question.yesHasConsequence ?? false)
-                    : (question.noHasConsequence ?? false)
-                    
-                    if hasConsequence {
-                        Text("Esta decisão vai ter consequências")
-                            .font(.custom("Chalkboy", size: 20))
-                            .foregroundColor(.red)
-                            .padding(.bottom, 8)
-                            .transition(.opacity)
-                            .animation(.easeInOut, value: answered)
-                    }
-                }
                 
                 let (imageName, imageSize) = questionImage()
                 
@@ -95,17 +79,28 @@ struct Game: View {
                                 ActionButton(text: "Sim", width: 162, height: 165) {
                                     answered = true
                                     answeredYes = true
+                                    // Mostrar CONSEQUENCE WARNING **SÓ se for “comer” e sim com consequência**
+                                    showConsequenceWarning = (question.id == "comer" && question.yesHasConsequence == true)
                                 }
                                 ActionButton(text: "Não", width: 162, height: 165) {
                                     answered = true
                                     answeredYes = false
+                                    // Mostrar CONSEQUENCE WARNING **SÓ se for “comer” e NÃO com consequência**
+                                    showConsequenceWarning = (question.id == "comer" && question.noHasConsequence == true)
                                 }
                             }
                         }
                     } else {
                         ZStack {
                             Image("textbox")
-                            VStack {
+                            VStack (spacing: 12) {
+                                if showConsequenceWarning {
+                                    Text("Esta decisão vai ter consequências")
+                                        .font(.custom("Chalkboy", size: 20))
+                                        .foregroundColor(.red)
+                                        .transition(.opacity)
+                                }
+                                
                                 TypewriterText(
                                     fullText: fullResponseForCurrentQuestion(),
                                     speed: 0.05,
@@ -138,32 +133,42 @@ struct Game: View {
     
     func fullResponseForCurrentQuestion() -> String {
         let question = questions[currentQuestionIndex]
-        
-        if question.id == "brincar" {
-            if consequenceState["didNotEat"] == true {
+
+        if question.id == "brincar" && consequenceState["didNotEat"] == true {
+            if answeredYes {
                 return "Eggsy brincou, mas passou mal porque não comeu."
+            } else {
+                return question.noResponse
             }
+        }
+
+        if question.id == "comer" {
+            return answeredYes ? question.yesResponse : question.noResponse
         }
         
         return answeredYes ? question.yesResponse : question.noResponse
     }
+
+
     
     func advanceToNextQuestion() {
         let question = questions[currentQuestionIndex]
-        
+
         if !answeredYes, question.noHasConsequence == true, let key = question.consequenceKey {
             consequenceState[key] = true
         }
-        
+
+        showConsequenceWarning = false
+        showContinue = false
+        answered = false
+
         if currentQuestionIndex + 1 < questions.count {
             currentQuestionIndex += 1
-            answered = false
-            showContinue = false
         } else {
             print("fim")
         }
     }
-    
+
     func questionImage() -> (String, CGSize) {
         let question = questions[currentQuestionIndex]
         
@@ -209,10 +214,7 @@ struct Game: View {
             question.imageSize ?? CGSize(width: 165, height: 162)
         )
     }
-    
-    
 }
-
 
 #Preview {
     Game()
