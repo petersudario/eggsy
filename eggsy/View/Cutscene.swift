@@ -19,23 +19,36 @@ struct Cutscene: View {
     @State private var audioPlayer: AVAudioPlayer?
     @State private var waitingForButton = false
     @State private var actionButtonTitle = ""
+    @State private var soloImageName: String? = nil
+    @State private var soloImageSize: CGSize = .zero
+    
+    @State private var showBackground = true
+    @State private var showEgg = true
     
     @EnvironmentObject var router: Router<AppRoute>
-
+    
     let cutscene: [CutsceneStep] = [
         .typewriter("A mamãe pato botou um\novo..."),
         .typewriter("Era um ovo pequeno,\ntímido, nada confiante."),
-        
-            .changeImage("egg_cracked"),
+        .changeImage("egg_cracked"),
         .showText("CLACK!"),
         .typewriter("Muito tempo se passou e o\npatinho não saiu do ovo..."),
-        
-            .typewriter("O patinho estava muito\nsaudável e pronto para sair."),
+        .typewriter("O patinho estava muito\nsaudável e pronto para sair."),
         .showText("silêncio..."),
+        .typewriter("Mas não saia de jeito\nnenhum."),
+        .waitForButton(title: "Sair"),
+        .showSoloImage(name: "birth", size: CGSize(width: 212, height: 300)),
+        .showSoloImage(name: "eggsy", size: CGSize(width: 164, height: 162)),
+        .typewriter("Quando a mamãe pato\npediu para que ele saísse.."),
+        .typewriter("Ele incrivelmente saiu."),
+        .typewriter("A mamae pato o nomeou de..."),
+        .showText("EGGSY."),
+        .showSoloImage(name: "confused", size: CGSize(width: 105, height: 238)),
+        .typewriter("Porem ele nasceu com\numa dificuldade..."),
+        .showSoloImage(name: "confused_2", size: CGSize(width: 170, height: 238)),
+        .typewriter("Ele não conseguia tomar\ndecisoes."),
         
-            .typewriter("Mas não saia de jeito\nnenhum."),
         
-            .waitForButton(title: "Sair")
         
     ]
     
@@ -54,17 +67,14 @@ struct Cutscene: View {
             displayedText = text
             showContinue = true
             
-            
         case .changeImage(let imageName):
             currentEggImage = imageName
-            
+
             if imageName == "egg_cracked" {
                 playSound(named: "crack")
             }
-            
+
             advanceCutscene()
-            
-            
             
         case .typewriter(let text):
             typingText = text
@@ -79,10 +89,14 @@ struct Cutscene: View {
             actionButtonTitle = title
             waitingForButton = true
             
+        case .showSoloImage(let name, let size):
+            soloImageName = name
+            soloImageSize = size
+            showContinue = true
+            
+            
         }
     }
-    
-    
     
     func playSound(named soundName: String) {
         guard let url = Bundle.main.url(forResource: soundName, withExtension: "mp3") else {
@@ -104,16 +118,37 @@ struct Cutscene: View {
                     ZStack {
                         AnimatedBackgroundView(images: ["rabisco_1", "rabisco_2", "rabisco_3"])
                             .frame(width: 305, height: 300)
+                            .opacity(showBackground ? 1 : 0)
+                            .animation(.easeOut(duration: 0.5), value: showBackground)
                         
                         Image(currentEggImage)
                             .resizable()
                             .frame(width: 182, height: 244)
+                            .opacity(showEgg ? 1 : 0)
+                            .animation(.easeOut(duration: 0.5), value: showEgg)
+                        
+                        if let soloName = soloImageName {
+                            VStack {
+                                Image(soloName)
+                                    .resizable()
+                                    .frame(width: soloImageSize.width, height: soloImageSize.height)
+                                    .padding(.top, 100)
+                                Spacer()
+                                if showContinue && (typingText == nil && displayedText == nil) {
+                                    BouncingImage(imageName: "continue_arrow", size: CGSize(width: 60, height: 27))
+                                        .padding(.top, 150)
+                                }
+                            }
+                            
+                        }
                     }
                     if let displayed = displayedText {
                         Text(displayed)
                             .font(.custom("Chalkboy", size: 116))
                             .multilineTextAlignment(.center)
                             .foregroundColor(.black)
+                        
+                        
                     }
                 }
                 Spacer()
@@ -122,19 +157,30 @@ struct Cutscene: View {
                         .padding(.top, 150)
                 }
                 
+                
             }
             .padding(.top, 150)
             
             if waitingForButton {
                 ActionButton(text: actionButtonTitle, action: {
+                    // Fade out background and image
+                    withAnimation {
+                        showBackground = false
+                        showEgg = false
+                    }
                     waitingForButton = false
                     actionButtonTitle = ""
-                    advanceCutscene()
-                    router.push(to: .game, animate: false)
+                    
+                    // Delay o avanço da cutscene pra esperar a animação acabar
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        advanceCutscene()
+                        
+                        showContinue = true
+                        
+                    }
                 })
-                    .padding(.top, 40)
+                .padding(.top, 40)
             }
-            
             else if let typing = typingText {
                 ZStack {
                     Image("textbox")
@@ -160,15 +206,20 @@ struct Cutscene: View {
         }
         .onTapGesture {
             if showContinue {
-                advanceCutscene()
+                if currentStepIndex >= cutscene.count {
+                    router.push(to: .game, animate: false)
+                } else {
+                    advanceCutscene()
+                }
             }
         }
+        
         .onAppear {
             advanceCutscene()
         }
     }
-    
 }
+
 
 
 #Preview {
