@@ -9,13 +9,16 @@ import SwiftUI
 
 struct ActionButton: View {
     var text: String
+    var width: CGFloat = 237
+    var height: CGFloat = 198
+    
     var action: () -> Void = { }
     var body: some View {
         ZStack {
             Image("button_box")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 237, height: 109)
+                .frame(width: width, height: height)
 
             Text(text)
                 .font(.custom("Chalkboy", size: 68))

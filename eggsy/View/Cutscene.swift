@@ -21,7 +21,6 @@ struct Cutscene: View {
     @State private var actionButtonTitle = ""
     @State private var soloImageName: String? = nil
     @State private var soloImageSize: CGSize = .zero
-    
     @State private var showBackground = true
     @State private var showEgg = true
     
@@ -47,9 +46,6 @@ struct Cutscene: View {
         .typewriter("Porem ele nasceu com\numa dificuldade..."),
         .showSoloImage(name: "confused_2", size: CGSize(width: 170, height: 238)),
         .typewriter("Ele não conseguia tomar\ndecisoes."),
-        
-        
-        
     ]
     
     func advanceCutscene() {
@@ -93,7 +89,6 @@ struct Cutscene: View {
             soloImageName = name
             soloImageSize = size
             showContinue = true
-            
             
         }
     }
@@ -163,7 +158,6 @@ struct Cutscene: View {
             
             if waitingForButton {
                 ActionButton(text: actionButtonTitle, action: {
-                    // Fade out background and image
                     withAnimation {
                         showBackground = false
                         showEgg = false
@@ -171,7 +165,6 @@ struct Cutscene: View {
                     waitingForButton = false
                     actionButtonTitle = ""
                     
-                    // Delay o avanço da cutscene pra esperar a animação acabar
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         advanceCutscene()
                         
@@ -219,8 +212,6 @@ struct Cutscene: View {
         }
     }
 }
-
-
 
 #Preview {
     Cutscene()
