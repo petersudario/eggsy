@@ -38,13 +38,18 @@ struct Game: View {
             imageName: "friends",
             yesResponse: "Eggsy se divertiu muito com seus amigos.",
             noResponse: "Eggsy não brincou.",
+            yesHasConsequence: true, noHasConsequence: false, consequenceKey: "didNotEat",
             consequenceText: "Eggsy brincou, mas passou mal",
-            consequenceImageName: "pass_out",
-            alternativeImageName: "happy",
-            imageSize: CGSize(width: 180, height: 180),
-            consequenceImageSize: CGSize(width: 260, height: 328),
-            alternativeImageSize: CGSize(width: 210, height: 261)
+            yesImage: "happy",
+            noImage: "eggsy",
+            yesConsequenceImage: "pass_out",
+            noConsequenceImage: "eggsy",
+            yesImageSize: CGSize(width: 180, height: 180),
+            noImageSize: CGSize(width: 180, height: 180),
+            yesConsequenceImageSize: CGSize(width: 260, height: 328),
+            noConsequenceImageSize: CGSize(width: 210, height: 261)
         )
+        
     ]
     
     var body: some View {
@@ -70,12 +75,12 @@ struct Game: View {
                 }
                 
                 let (imageName, imageSize) = questionImage()
-
+                
                 Image(imageName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: imageSize.width, height: imageSize.height)
-
+                
                 Spacer()
                 
                 Group {
@@ -162,31 +167,50 @@ struct Game: View {
     func questionImage() -> (String, CGSize) {
         let question = questions[currentQuestionIndex]
         
-        if answered {
-            if question.id == "brincar" {
-                if consequenceState["didNotEat"] == true,
-                   let consequenceImage = question.consequenceImageName {
-                    return (
-                        consequenceImage,
-                        question.consequenceImageSize ?? CGSize(width: 165, height: 162)
-                    )
-                }
-                if consequenceState["didNotEat"] != true,
-                   let altImage = question.alternativeImageName {
-                    return (
-                        altImage,
-                        question.alternativeImageSize ?? CGSize(width: 165, height: 162)
-                    )
-                }
+        guard answered else {
+            return (
+                question.imageName,
+                question.imageSize ?? CGSize(width: 165, height: 162)
+            )
+        }
+        
+        let consequenceApplied = question.consequenceKey.map { consequenceState[$0] == true } ?? false
+        
+        if answeredYes {
+            if consequenceApplied,
+               let image = question.yesConsequenceImage {
+                return (
+                    image,
+                    question.yesConsequenceImageSize ?? CGSize(width: 165, height: 162)
+                )
+            } else if let image = question.yesImage {
+                return (
+                    image,
+                    question.yesImageSize ?? CGSize(width: 165, height: 162)
+                )
+            }
+        } else {
+            if consequenceApplied,
+               let image = question.noConsequenceImage {
+                return (
+                    image,
+                    question.noConsequenceImageSize ?? CGSize(width: 165, height: 162)
+                )
+            } else if let image = question.noImage {
+                return (
+                    image,
+                    question.noImageSize ?? CGSize(width: 165, height: 162)
+                )
             }
         }
-
+        
         return (
             question.imageName,
             question.imageSize ?? CGSize(width: 165, height: 162)
         )
     }
-
+    
+    
 }
 
 

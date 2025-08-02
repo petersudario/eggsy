@@ -13,16 +13,23 @@ struct Question {
     let imageName: String
     let yesResponse: String
     let noResponse: String
-    var noHasConsequence: Bool? = false
-    var yesHasConsequence: Bool? = false
-    var consequenceText: String?
-    var consequenceKey: String? = nil
-    var consequenceImageName: String? = nil
-    var alternativeImageName: String? = nil
-    var imageSize: CGSize? = nil
-    var consequenceImageSize: CGSize? = nil
-    var alternativeImageSize: CGSize? = nil
 
+    var yesHasConsequence: Bool? = false
+    var noHasConsequence: Bool? = false
+    var consequenceKey: String? = nil
+    var consequenceText: String? = nil
+
+    var yesImage: String? = nil
+    var noImage: String? = nil
+    var yesConsequenceImage: String? = nil
+    var noConsequenceImage: String? = nil
+
+    var imageSize: CGSize? = nil
+    var yesImageSize: CGSize? = nil
+    var noImageSize: CGSize? = nil
+    var yesConsequenceImageSize: CGSize? = nil
+    var noConsequenceImageSize: CGSize? = nil
 }
+
 
 
