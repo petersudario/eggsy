@@ -12,7 +12,7 @@ struct Game: View {
     @State private var answeredYes: Bool = false
     @State private var showContinue = false
     @State private var showConsequenceWarning = false
-
+    
     @State private var consequenceState: [String: Bool] = [:]
     
     private let questions: [Question] = [
@@ -24,7 +24,7 @@ struct Game: View {
             noResponse: "Eggsy não fez quack."
         ),
         Question(
-            id: "comer",
+            id: "eat",
             text: "Comer?",
             imageName: "eggsy",
             yesResponse: "Eggsy comeu.",
@@ -33,12 +33,13 @@ struct Game: View {
             consequenceKey: "didNotEat"
         ),
         Question(
-            id: "brincar",
+            id: "play",
             text: "Brincar com os amigos?",
             imageName: "friends",
             yesResponse: "Eggsy se divertiu muito com seus amigos.",
             noResponse: "Eggsy não brincou.",
-            yesHasConsequence: true, noHasConsequence: false, consequenceKey: "didNotEat",
+            yesHasConsequence: true, noHasConsequence: false,
+            consequenceKey: "didNotEat",
             consequenceText: "Eggsy brincou, mas passou mal",
             yesImage: "happy",
             noImage: "eggsy",
@@ -48,6 +49,15 @@ struct Game: View {
             noImageSize: CGSize(width: 180, height: 180),
             yesConsequenceImageSize: CGSize(width: 260, height: 328),
             noConsequenceImageSize: CGSize(width: 210, height: 261)
+        ),
+        Question(
+            id: "grow_up",
+            text: "Crescer?",
+            imageName: "eggsy",
+            yesResponse: "Eggsy cresceu!",
+            noResponse: "",
+            yesImage: "eggsy_child",
+            yesImageSize: CGSize(width: 190, height: 270)
         )
     ]
     
@@ -76,17 +86,22 @@ struct Game: View {
                                 .foregroundColor(.black)
                             
                             HStack(spacing: 40) {
-                                ActionButton(text: "Sim", width: 162, height: 165) {
-                                    answered = true
-                                    answeredYes = true
-                                    // Mostrar CONSEQUENCE WARNING **SÓ se for “comer” e sim com consequência**
-                                    showConsequenceWarning = (question.id == "comer" && question.yesHasConsequence == true)
+                                if (question.yesResponse != "") {
+                                    ActionButton(text: "Sim", width: 162, height: 165) {
+                                        answered = true
+                                        answeredYes = true
+                                        
+                                        showConsequenceWarning = (question.id == "comer" && question.yesHasConsequence == true)
+                                    }
                                 }
-                                ActionButton(text: "Não", width: 162, height: 165) {
-                                    answered = true
-                                    answeredYes = false
-                                    // Mostrar CONSEQUENCE WARNING **SÓ se for “comer” e NÃO com consequência**
-                                    showConsequenceWarning = (question.id == "comer" && question.noHasConsequence == true)
+                                if (question.noResponse != "") {
+                                    
+                                    ActionButton(text: "Não", width: 162, height: 165) {
+                                        answered = true
+                                        answeredYes = false
+                                        
+                                        showConsequenceWarning = (question.id == "comer" && question.noHasConsequence == true)
+                                    }
                                 }
                             }
                         }
@@ -102,7 +117,7 @@ struct Game: View {
                                 }
                                 
                                 TypewriterText(
-                                    fullText: fullResponseForCurrentQuestion(),
+                                    fullText: applyConsequences(),
                                     speed: 0.05,
                                     fontName: "Chalkboy",
                                     fontSize: 26
@@ -131,44 +146,44 @@ struct Game: View {
         }
     }
     
-    func fullResponseForCurrentQuestion() -> String {
+    func applyConsequences() -> String {
         let question = questions[currentQuestionIndex]
-
-        if question.id == "brincar" && consequenceState["didNotEat"] == true {
+        
+        if question.id == "play" && consequenceState["didNotEat"] == true {
             if answeredYes {
                 return "Eggsy brincou, mas passou mal porque não comeu."
             } else {
                 return question.noResponse
             }
         }
-
-        if question.id == "comer" {
+        
+        if question.id == "eat" {
             return answeredYes ? question.yesResponse : question.noResponse
         }
         
         return answeredYes ? question.yesResponse : question.noResponse
     }
-
-
+    
+    
     
     func advanceToNextQuestion() {
         let question = questions[currentQuestionIndex]
-
+        
         if !answeredYes, question.noHasConsequence == true, let key = question.consequenceKey {
             consequenceState[key] = true
         }
-
+        
         showConsequenceWarning = false
         showContinue = false
         answered = false
-
+        
         if currentQuestionIndex + 1 < questions.count {
             currentQuestionIndex += 1
         } else {
             print("fim")
         }
     }
-
+    
     func questionImage() -> (String, CGSize) {
         let question = questions[currentQuestionIndex]
         
