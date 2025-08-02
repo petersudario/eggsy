@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ovo_rachado.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

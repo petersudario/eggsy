@@ -9,8 +9,6 @@ import SwiftUI
 
 struct Game: View {
     var body: some View {
-        Text("jogo")
-            .hideBackButton()
+        Text("O jogo")
     }
 }
-

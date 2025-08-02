@@ -23,7 +23,8 @@ struct StartScreen: View {
                     .aspectRatio(contentMode: .fit)
             
                 ActionButton(text: "START", action: {
-                    router.replaceRootView(to: .game)
+                    router.push(to: .cutscene, animate: false)
+
                 })
 
 
