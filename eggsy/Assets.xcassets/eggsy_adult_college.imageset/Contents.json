@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "eggsy_adult_college.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
