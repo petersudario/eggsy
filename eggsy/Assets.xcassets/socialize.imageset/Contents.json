@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "eggsy_jovem_amigos.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

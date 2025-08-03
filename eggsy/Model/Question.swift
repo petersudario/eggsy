@@ -7,29 +7,23 @@
 
 import Foundation
 
+struct ConsequenceRule {
+    let key: String
+    let text: String
+    let imageName: String?
+    let conditions: [(questionId: String, expectedAnswer: Bool)]
+}
+
+// Modelo da questão (você deve ter algo assim no seu código)
 struct Question {
     let id: String
     let text: String
     let imageName: String
     let yesResponse: String
     let noResponse: String
-
-    var yesHasConsequence: Bool? = false
-    var noHasConsequence: Bool? = false
-    var consequenceKey: String? = nil
-    var consequenceText: String? = nil
-
-    var yesImage: String? = nil
-    var noImage: String? = nil
-    var yesConsequenceImage: String? = nil
-    var noConsequenceImage: String? = nil
-
-    var imageSize: CGSize? = nil
-    var yesImageSize: CGSize? = nil
-    var noImageSize: CGSize? = nil
-    var yesConsequenceImageSize: CGSize? = nil
-    var noConsequenceImageSize: CGSize? = nil
+    let yesImage: String?
+    let noImage: String?
+    let yesImageSize: CGSize?
+    let noImageSize: CGSize?
 }
-
-
 
